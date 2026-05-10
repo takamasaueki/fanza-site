@@ -1,0 +1,1159 @@
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0">
+
+<title>あべ藍出演作品</title>
+
+<style>
+
+body {
+    background:#111;
+    color:white;
+    margin:0;
+    font-family:Arial;
+}
+
+a {
+    text-decoration:none;
+}
+
+.header {
+
+    background:
+    linear-gradient(
+        90deg,
+        #ff6600,
+        #ff0033
+    );
+
+    padding:15px 20px;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:999;
+}
+
+.header-inner {
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+}
+
+.logo {
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+}
+
+.search-box {
+
+    display:flex;
+
+    gap:10px;
+
+    width:100%;
+
+    max-width:500px;
+}
+
+.search-input {
+
+    flex:1;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:8px;
+
+    font-size:16px;
+}
+
+.search-btn {
+
+    background:#111;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.container {
+    width:1300px;
+    margin:20px auto;
+}
+
+.layout {
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+}
+
+.sidebar {
+
+    width:220px;
+
+    background:#1b1b1b;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    position:sticky;
+
+    top:90px;
+
+    align-self:flex-start;
+
+    max-height:calc(100vh - 100px);
+
+    overflow-y:auto;
+}
+
+.sidebar::-webkit-scrollbar {
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background:#444;
+    border-radius:10px;
+}
+
+.sidebar-title {
+    font-size:20px;
+    margin-bottom:15px;
+}
+
+.sidebar a {
+
+    display:block;
+
+    background:#222;
+
+    color:white;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    margin-bottom:8px;
+
+    transition:0.2s;
+}
+
+.sidebar a:hover {
+    background:#ff6600;
+}
+
+.main {
+    flex:1;
+}
+
+.card {
+
+    display:flex;
+
+    gap:20px;
+
+    background:#1b1b1b;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    margin-bottom:20px;
+}
+
+.card img {
+    border-radius:10px;
+}
+
+.info {
+    flex:1;
+}
+
+.info p {
+    color:#ccc;
+    line-height:1.7;
+}
+
+.btn {
+
+    display:inline-block;
+
+    background:#ff0033;
+
+    color:white;
+
+    padding:12px 20px;
+
+    border-radius:8px;
+
+    margin-top:10px;
+}
+
+.btn:hover {
+    background:#ff3366;
+}
+
+.grid {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fill,minmax(220px,1fr));
+
+    gap:20px;
+}
+
+.grid-card {
+
+    background:#1b1b1b;
+
+    border-radius:12px;
+
+    overflow:hidden;
+}
+
+.grid-card img {
+    width:100%;
+    display:block;
+}
+
+.grid-info {
+    padding:12px;
+}
+
+.hero-grid {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:20px;
+}
+
+.hero-card {
+
+    background:#1b1b1b;
+
+    border-radius:14px;
+
+    overflow:hidden;
+}
+
+.hero-card img {
+    width:100%;
+}
+
+.hero-info {
+    padding:15px;
+}
+
+.rank {
+    color:gold;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.pagination {
+    margin-top:40px;
+}
+
+.pagination a {
+
+    display:inline-block;
+
+    background:#222;
+
+    color:white;
+
+    padding:10px 15px;
+
+    border-radius:8px;
+
+    margin-right:10px;
+}
+
+.pagination a:hover {
+    background:#ff6600;
+}
+
+@media screen and (max-width:768px) {
+
+    .container {
+        width:95%;
+    }
+
+    .header-inner {
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .layout {
+        flex-direction:column;
+    }
+
+    .sidebar {
+        width:auto;
+        position:static;
+        max-height:none;
+        overflow:visible;
+    }
+
+    .hero-grid {
+        grid-template-columns:1fr;
+    }
+
+    .card {
+        flex-direction:column;
+    }
+
+    .card img {
+        width:100%;
+        height:auto;
+    }
+
+}
+
+</style>
+
+<script>
+
+function searchSite() {
+
+    const keyword =
+    document.getElementById(
+        "searchInput"
+    ).value;
+
+    if(keyword.trim() !== "") {
+
+        location.href =
+        "../search/" +
+        encodeURIComponent(keyword) +
+        ".html";
+    }
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<div class="header-inner">
+
+<div class="logo">
+きょうはこれでいいや。
+</div>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+class="search-input"
+placeholder="女優名・ジャンル検索">
+
+<button
+class="search-btn"
+onclick="searchSite()">
+
+検索
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="layout">
+
+<div class="sidebar">
+
+<div class="sidebar-title">
+ジャンル
+</div>
+
+<a href="../genre/index_1.html">
+おすすめランキング
+</a>
+
+<a href="../genre/big_1.html">
+巨乳ランキング
+</a>
+
+<a href="../genre/wife_1.html">
+人妻ランキング
+</a>
+
+<a href="../genre/mature_1.html">
+熟女ランキング
+</a>
+
+<a href="../genre/nakadashi_1.html">
+中出しランキング
+</a>
+
+<a href="../genre/uniform_1.html">
+制服ランキング
+</a>
+
+<a href="../genre/gal_1.html">
+ギャルランキング
+</a>
+
+<div class="sidebar-title"
+style="margin-top:30px;">
+人気女優
+</div>
+
+<a href="../actress/北岡果林.html">
+北岡果林
+</a>
+
+<a href="../actress/河北彩伽（河北彩花）.html">
+河北彩伽（河北彩花）
+</a>
+
+<a href="../actress/榊原萌.html">
+榊原萌
+</a>
+
+<a href="../actress/川越にこ.html">
+川越にこ
+</a>
+
+<a href="../actress/瀬戸環奈.html">
+瀬戸環奈
+</a>
+
+<a href="../actress/宮城りえ.html">
+宮城りえ
+</a>
+
+<a href="../actress/七ツ森りり.html">
+七ツ森りり
+</a>
+
+<a href="../actress/浅野こころ.html">
+浅野こころ
+</a>
+
+<a href="../actress/楓ふうあ.html">
+楓ふうあ
+</a>
+
+<a href="../actress/明日葉みつは.html">
+明日葉みつは
+</a>
+
+<a href="../actress/早坂ひめ.html">
+早坂ひめ
+</a>
+
+<a href="../actress/村上悠華.html">
+村上悠華
+</a>
+
+<a href="../actress/逢沢みゆ.html">
+逢沢みゆ
+</a>
+
+<a href="../actress/美園和花.html">
+美園和花
+</a>
+
+<a href="../actress/天馬ゆい.html">
+天馬ゆい
+</a>
+
+<a href="../actress/胡桃さくら.html">
+胡桃さくら
+</a>
+
+<a href="../actress/松本いちか.html">
+松本いちか
+</a>
+
+<a href="../actress/本郷愛.html">
+本郷愛
+</a>
+
+<a href="../actress/金松季歩.html">
+金松季歩
+</a>
+
+<a href="../actress/田野憂.html">
+田野憂
+</a>
+
+<a href="../actress/三田真鈴.html">
+三田真鈴
+</a>
+
+<a href="../actress/奥田咲.html">
+奥田咲
+</a>
+
+<a href="../actress/miru.html">
+miru
+</a>
+
+<a href="../actress/未歩なな.html">
+未歩なな
+</a>
+
+<a href="../actress/白上咲花.html">
+白上咲花
+</a>
+
+<a href="../actress/五条恋.html">
+五条恋
+</a>
+
+<a href="../actress/小日向みゆう（清原みゆう）.html">
+小日向みゆう（清原みゆう）
+</a>
+
+<a href="../actress/虹村ゆみ.html">
+虹村ゆみ
+</a>
+
+<a href="../actress/MINAMO.html">
+MINAMO
+</a>
+
+<a href="../actress/葵いぶき.html">
+葵いぶき
+</a>
+
+</div>
+
+<div class="main">
+
+<h1>
+あべ藍
+</h1>
+
+<div class="grid">
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/vrkm01777/vrkm01777pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【VR】2016～2026KMPVR10周年記念珠玉の名作を大量収録！！2000
+</p>
+
+<a
+class="btn"
+href="../item/【VR】2016～2026KMPVR10周年記念珠玉の名作を大量収録！！2000分アニバーサリーBOX 8KVer..html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_1711jkez00002/h_1711jkez00002pl.jpg">
+
+<div class="grid-info">
+
+<p>
+しろうとまんまん女子交性ベスト。おぢのいいなりオナホちゃんズ260分 .002
+</p>
+
+<a
+class="btn"
+href="../item/しろうとまんまん女子交性ベスト。おぢのいいなりオナホちゃんズ260分 .002.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_113spe00006/h_113spe00006pl.jpg">
+
+<div class="grid-info">
+
+<p>
+万引き スーパーの人妻たち ●でか尻でか乳ぷにょ妻 ●折●が必要クソ生意気妻 ●
+</p>
+
+<a
+class="btn"
+href="../item/万引き スーパーの人妻たち ●でか尻でか乳ぷにょ妻 ●折●が必要クソ生意気妻 ●スレンダー爆裂張乳妻.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/tkd00058/tkd00058pl.jpg">
+
+<div class="grid-info">
+
+<p>
+藍女将の告白 先輩！ご主人と愛人さんを膣生出しでいただきました！ あべ藍
+</p>
+
+<a
+class="btn"
+href="../item/藍女将の告白 先輩！ご主人と愛人さんを膣生出しでいただきました！ あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/cadv00919/cadv00919pl.jpg">
+
+<div class="grid-info">
+
+<p>
+単身赴任先は田舎町…隣に住む性欲過多なバツイチ美女に惑わされボクは何度も中出しし
+</p>
+
+<a
+class="btn"
+href="../item/単身赴任先は田舎町…隣に住む性欲過多なバツイチ美女に惑わされボクは何度も中出ししまくった 8時間 COLLECTION.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/vrkm01508/vrkm01508pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【VR】超エロビジョン！！美麗8K全裸女子ほっかほか中出しBEST！！ 15名の
+</p>
+
+<a
+class="btn"
+href="../item/【VR】超エロビジョン！！美麗8K全裸女子ほっかほか中出しBEST！！ 15名のエロ美女たちをセーシで膣内からあっためろ！.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/vrkm01495/vrkm01495pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【VR】イッグウゥぅう！！魂の叫び！！絶叫痴女8KVR300分
+</p>
+
+<a
+class="btn"
+href="../item/【VR】イッグウゥぅう！！魂の叫び！！絶叫痴女8KVR300分.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/cadv00915/cadv00915pl.jpg">
+
+<div class="grid-info">
+
+<p>
+CRYSTAL THE BEST 8時間 2024 上半期
+</p>
+
+<a
+class="btn"
+href="../item/CRYSTAL THE BEST 8時間 2024 上半期.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/vrkm01431/vrkm01431pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【VR】えっぐい神テクでイカされまくり！！！8K痴女15タイトル最強BEST
+</p>
+
+<a
+class="btn"
+href="../item/【VR】えっぐい神テクでイカされまくり！！！8K痴女15タイトル最強BEST.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/vrkm01432/vrkm01432pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【VR】超8K正常位中出し50連発！BEST 快感ホール30コーナーパラダイス！
+</p>
+
+<a
+class="btn"
+href="../item/【VR】超8K正常位中出し50連発！BEST 快感ホール30コーナーパラダイス！.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_1711mfcd00012/h_1711mfcd00012pl.jpg">
+
+<div class="grid-info">
+
+<p>
+MOON FORCE ぱこぱこしろうとコレクション。 vol.12
+</p>
+
+<a
+class="btn"
+href="../item/MOON FORCE ぱこぱこしろうとコレクション。 vol.12.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/bkh00343/bkh00343pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【配信限定特別版】母子交尾 ～奥利根湖路～ あべ藍
+</p>
+
+<a
+class="btn"
+href="../item/【配信限定特別版】母子交尾 ～奥利根湖路～ あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/bkd00343/bkd00343pl.jpg">
+
+<div class="grid-info">
+
+<p>
+母子交尾～奥利根湖路～ あべ藍
+</p>
+
+<a
+class="btn"
+href="../item/母子交尾～奥利根湖路～ あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/vrkm01403/vrkm01403pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【VR】迫力の最高画質でもっと近くに君を感じる…イチャラブ8K BEST
+</p>
+
+<a
+class="btn"
+href="../item/【VR】迫力の最高画質でもっと近くに君を感じる…イチャラブ8K BEST.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_113sy00211/h_113sy00211pl.jpg">
+
+<div class="grid-info">
+
+<p>
+前略四畳半の奥様 藍さん 28歳 ●素人四畳半生中出しシリーズ あべ藍
+</p>
+
+<a
+class="btn"
+href="../item/前略四畳半の奥様 藍さん 28歳 ●素人四畳半生中出しシリーズ あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_1711jkjk00008/h_1711jkjk00008pl.jpg">
+
+<div class="grid-info">
+
+<p>
+アオハル放課後ハメ撮りスクランブル Very BEST vol.08
+</p>
+
+<a
+class="btn"
+href="../item/アオハル放課後ハメ撮りスクランブル Very BEST vol.08.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/pfas00014/pfas00014pl.jpg">
+
+<div class="grid-info">
+
+<p>
+令和エレジー 妻がカラダを売る理由
+</p>
+
+<a
+class="btn"
+href="../item/令和エレジー 妻がカラダを売る理由.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/ksbj00319/ksbj00319pl.jpg">
+
+<div class="grid-info">
+
+<p>
+絶倫義父に何度もイカされ中出しを許してしまったご無沙汰敏感妻 あべ藍
+</p>
+
+<a
+class="btn"
+href="../item/絶倫義父に何度もイカされ中出しを許してしまったご無沙汰敏感妻 あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_237nacr00809/h_237nacr00809pl.jpg">
+
+<div class="grid-info">
+
+<p>
+あべ藍におまかせあれ お悩みなんでも相談室「チェリー大学生の場合」
+</p>
+
+<a
+class="btn"
+href="../item/あべ藍におまかせあれ お悩みなんでも相談室「チェリー大学生の場合」.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/1hbad00684/1hbad00684pl.jpg">
+
+<div class="grid-info">
+
+<p>
+家庭教師の先生が舐め好きキス魔でグチョグチョ唾液でふやけるまでしゃぶり付いてくる
+</p>
+
+<a
+class="btn"
+href="../item/家庭教師の先生が舐め好きキス魔でグチョグチョ唾液でふやけるまでしゃぶり付いてくる あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/5141mbrbm00046/5141mbrbm00046pl.jpg">
+
+<div class="grid-info">
+
+<p>
+濡れヌ美少女 あべ藍
+</p>
+
+<a
+class="btn"
+href="../item/濡れヌ美少女 あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_1711fch00086/h_1711fch00086pl.jpg">
+
+<div class="grid-info">
+
+<p>
+「あなたのち●ぽは私の物！」いじられまくって超悶絶！ 超・最高のち●ぽ責め！vo
+</p>
+
+<a
+class="btn"
+href="../item/「あなたのち●ぽは私の物！」いじられまくって超悶絶！ 超・最高のち●ぽ責め！vol.07.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_1711docd00009/h_1711docd00009pl.jpg">
+
+<div class="grid-info">
+
+<p>
+『予約半年待ちリピ率100％ 某メンズエステ店 密室×密着 イキ過ぎた禁断サービ
+</p>
+
+<a
+class="btn"
+href="../item/『予約半年待ちリピ率100％ 某メンズエステ店 密室×密着 イキ過ぎた禁断サービス 20 ～コスプレ編～』.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_1440fgan00107/h_1440fgan00107pl.jpg">
+
+<div class="grid-info">
+
+<p>
+くぱぁま〇ことヒクつくアナルでアナタを勃起させる挑発見せつけオナニー 2
+</p>
+
+<a
+class="btn"
+href="../item/くぱぁま〇ことヒクつくアナルでアナタを勃起させる挑発見せつけオナニー 2.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/crnx00098/crnx00098pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【4K】隣人は巨乳で欲求不満なバツイチ妻 あべ藍
+</p>
+
+<a
+class="btn"
+href="../item/【4K】隣人は巨乳で欲求不満なバツイチ妻 あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/savr00312/savr00312pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【VR】酔っぱらって僕の部屋に訪れたお隣さんの彼女は彼氏と思い込んだままチ●ポを
+</p>
+
+<a
+class="btn"
+href="../item/【VR】酔っぱらって僕の部屋に訪れたお隣さんの彼女は彼氏と思い込んだままチ●ポを欲しがる甘えん坊痴女 あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/ekdv00735/ekdv00735pl.jpg">
+
+<div class="grid-info">
+
+<p>
+【4K】単身赴任先は田舎町… 隣に住む性欲過多なバツイチ美女の巨乳に惑わされボク
+</p>
+
+<a
+class="btn"
+href="../item/【4K】単身赴任先は田舎町… 隣に住む性欲過多なバツイチ美女の巨乳に惑わされボクは何度も中出ししまくった… あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_1440fgan00103/h_1440fgan00103pl.jpg">
+
+<div class="grid-info">
+
+<p>
+パンティの上からこねくり回してイキまくる 勃起クリトリスオナニー
+</p>
+
+<a
+class="btn"
+href="../item/パンティの上からこねくり回してイキまくる 勃起クリトリスオナニー.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+<div class="grid-card">
+
+<img src="https://pics.dmm.co.jp/digital/video/h_1440fgan00101/h_1440fgan00101pl.jpg">
+
+<div class="grid-info">
+
+<p>
+挑発的小悪魔ブルマ娘 藍 あべ藍
+</p>
+
+<a
+class="btn"
+href="../item/挑発的小悪魔ブルマ娘 藍 あべ藍.html">
+▶ 詳細
+</a>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</body>
+</html>
