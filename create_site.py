@@ -1,815 +1,114 @@
-# =====================================================
 # create_site.py
-# SEO強化 完全版
-# ・meta description
-# ・OGP
-# ・canonical
-# ・JSON-LD
-# ・関連記事
-# ・パンくず
-# ・sitemap.xml
-# ・robots.txt
-# =====================================================
-
-import requests
-import re
+# 完成形テンプレート（API ID / affiliate ID を自分の値に置き換え）
 import os
-import shutil
-from collections import Counter
+import requests
+from pathlib import Path
+from datetime import datetime
 
-# =====================================================
-# 設定
-# =====================================================
-
+# =====================
+# 設定（ここを書き換え）
+# =====================
 API_ID = "D77Q7aTPWZhpKRnF0HSw"
-AFF_ID = "takayanh-990"
+AFFILIATE_ID = "takayanh-990"
+SITE_URL = "http://eromatrix.com/"
+SITE_NAME = "きょうはこれでいいや。"
 
-BASE_URL = "https://example.com"
+BASE_API = "https://api.dmm.com/affiliate/v3/ItemList"
+ROOT = Path(".")
+for d in ["genre", "item", "actress", "search", "articles"]:
+    (ROOT / d).mkdir(exist_ok=True)
 
-# =====================================================
-# 出力フォルダ
-# =====================================================
-
-folders = [
-    "genre",
-    "item",
-    "actress",
-    "search"
+ARTICLES = [
+    ("av-actress-ranking-2026", "2026年人気AV女優ランキング", "注目女優まとめ"),
+    ("beginner-recommend", "初心者向けおすすめジャンル", "人気ジャンル紹介"),
+    ("popular-genre", "人気ジャンルまとめ", "定番ジャンルまとめ"),
 ]
 
-# =====================================================
-# 初期化
-# =====================================================
+ACTRESSES = ["三上悠亜", "河北彩花", "葵つかさ", "深田えいみ", "明日花キララ"]
+GENRES = ["巨乳", "人妻", "制服", "中出し", "企画"]
 
-for folder in folders:
 
-    if os.path.exists(folder):
-
-        shutil.rmtree(folder)
-
-    os.makedirs(
-        folder,
-        exist_ok=True
-    )
-
-# =====================================================
-# ジャンル
-# =====================================================
-
-genres = [
-    ("", "index", "おすすめAVランキング"),
-    ("巨乳", "big", "巨乳AVランキング"),
-    ("人妻", "wife", "人妻AVランキング"),
-    ("熟女", "mature", "熟女AVランキング"),
-    ("中出し", "nakadashi", "中出しAVランキング"),
-    ("制服", "uniform", "制服AVランキング"),
-    ("ギャル", "gal", "ギャルAVランキング"),
-]
-
-# =====================================================
-# URL管理
-# =====================================================
-
-all_urls = []
-
-# =====================================================
-# API
-# =====================================================
-
-def get_items(keyword="", hits=10, offset=1):
-
-    url = "https://api.dmm.com/affiliate/v3/ItemList"
-
+def fetch_items(keyword="人気", hits=20):
     params = {
         "api_id": API_ID,
-        "affiliate_id": AFF_ID,
+        "affiliate_id": AFFILIATE_ID,
         "site": "FANZA",
         "service": "digital",
         "floor": "videoa",
-        "hits": hits,
-        "offset": offset,
         "keyword": keyword,
-        "sort": "rank",
-        "output": "json"
+        "hits": hits,
+        "output": "json",
     }
-
     try:
-
-        response = requests.get(
-            url,
-            params=params,
-            timeout=20
-        )
-
-        data = response.json()
-
-        return data.get(
-            "result",
-            {}
-        ).get(
-            "items",
-            []
-        )
-
-    except Exception as e:
-
-        print(e)
-
+        r = requests.get(BASE_API, params=params, timeout=20)
+        r.raise_for_status()
+        data = r.json()
+        return data.get("result", {}).get("items", [])
+    except Exception:
         return []
 
-# =====================================================
-# 安全ファイル名
-# =====================================================
 
-def safe_filename(text):
-
-    text = re.sub(
-        r'[\\/:*?"<>|]',
-        '',
-        text
-    )
-
-    return text[:80]
-
-# =====================================================
-# SEO description
-# =====================================================
-
-def make_description(text):
-
-    text = re.sub(
-        '<.*?>',
-        '',
-        text
-    )
-
-    return text[:120]
-
-# =====================================================
-# HTML開始
-# =====================================================
-
-def html_start(
-    title,
-    description="",
-    canonical="",
-    image=""
-):
-
-    return f"""
-<html>
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,
-initial-scale=1.0">
-
-<title>{title}</title>
-
-<meta name="description"
-content="{description}">
-
-<link rel="canonical"
-href="{canonical}">
-
-<meta property="og:title"
-content="{title}">
-
-<meta property="og:description"
-content="{description}">
-
-<meta property="og:image"
-content="{image}">
-
-<meta property="og:type"
-content="website">
-
-<meta property="og:url"
-content="{canonical}">
-
-<script type="application/ld+json">
-
-{{
-"@context":"https://schema.org",
-"@type":"WebPage",
-"name":"{title}",
-"description":"{description}",
-"url":"{canonical}"
-}}
-
-</script>
-
-<style>
-
-body {{
-    background:#111;
-    color:white;
-    margin:0;
-    font-family:Arial;
-}}
-
-a {{
-    text-decoration:none;
-}}
-
-.header {{
-
-    background:
-    linear-gradient(
-        90deg,
-        #ff6600,
-        #ff0033
-    );
-
-    padding:15px 20px;
-
-    position:sticky;
-
-    top:0;
-
-    z-index:999;
-}}
-
-.header-inner {{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:20px;
-}}
-
-.logo {{
-
-    font-size:30px;
-
-    font-weight:bold;
-}}
-
-.container {{
-    width:1300px;
-    margin:20px auto;
-}}
-
-.layout {{
-    display:flex;
-    gap:20px;
-    align-items:flex-start;
-}}
-
-.sidebar {{
-
-    width:220px;
-
-    background:#1b1b1b;
-
-    padding:15px;
-
-    border-radius:12px;
-
-    position:sticky;
-
-    top:90px;
-
-    max-height:calc(100vh - 100px);
-
-    overflow-y:auto;
-}}
-
-.sidebar::-webkit-scrollbar {{
-    width:6px;
-}}
-
-.sidebar::-webkit-scrollbar-thumb {{
-    background:#444;
-}}
-
-.sidebar-title {{
-    font-size:20px;
-    margin-bottom:15px;
-}}
-
-.sidebar a {{
-
-    display:block;
-
-    background:#222;
-
-    color:white;
-
-    padding:10px;
-
-    border-radius:8px;
-
-    margin-bottom:8px;
-}}
-
-.sidebar a:hover {{
-    background:#ff6600;
-}}
-
-.main {{
-    flex:1;
-}}
-
-.card {{
-
-    display:flex;
-
-    gap:20px;
-
-    background:#1b1b1b;
-
-    padding:20px;
-
-    border-radius:12px;
-
-    margin-bottom:20px;
-}}
-
-.card img {{
-    border-radius:10px;
-}}
-
-.info {{
-    flex:1;
-}}
-
-.info p {{
-    color:#ccc;
-    line-height:1.7;
-}}
-
-.btn {{
-
-    display:inline-block;
-
-    background:#ff0033;
-
-    color:white;
-
-    padding:12px 20px;
-
-    border-radius:8px;
-
-    margin-top:10px;
-}}
-
-.btn:hover {{
-    background:#ff3366;
-}}
-
-.grid {{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fill,minmax(220px,1fr));
-
-    gap:20px;
-}}
-
-.grid-card {{
-
-    background:#1b1b1b;
-
-    border-radius:12px;
-
-    overflow:hidden;
-}}
-
-.grid-card img {{
-    width:100%;
-}}
-
-.grid-info {{
-    padding:12px;
-}}
-
-.breadcrumb {{
-
-    margin-bottom:20px;
-
-    color:#aaa;
-}}
-
-.related-title {{
-
-    margin-top:60px;
-
-    font-size:28px;
-}}
-
-@media screen and (max-width:768px) {{
-
-    .container {{
-        width:95%;
-    }}
-
-    .layout {{
-        flex-direction:column;
-    }}
-
-    .sidebar {{
-        width:auto;
-        position:static;
-        max-height:none;
-    }}
-
-    .card {{
-        flex-direction:column;
-    }}
-
-    .card img {{
-        width:100%;
-        height:auto;
-    }}
-
-}}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="header">
-
-<div class="header-inner">
-
-<div class="logo">
-きょうはこれでいいや。
-</div>
-
-</div>
-
-</div>
-
-<div class="container">
-
-<div class="layout">
-
-<div class="sidebar">
-
-<div class="sidebar-title">
-ジャンル
-</div>
-"""
-
-# =====================================================
-# サイドバー
-# =====================================================
-
-def create_sidebar():
-
-    html = ""
-
-    for keyword, filename, title in genres:
-
-        html += f"""
-<a href="../genre/{filename}_1.html">
-{title}
-</a>
-"""
-
-    html += """
-<div class="sidebar-title"
-style="margin-top:30px;">
-人気女優
-</div>
-"""
-
-    for actress in popular_actresses[:30]:
-
-        actress_file = safe_filename(actress)
-
-        html += f"""
-<a href="../actress/{actress_file}.html">
-{actress}
-</a>
-"""
-
-    return html
-
-# =====================================================
-# HTML終了
-# =====================================================
-
-def html_end():
-
-    return """
-</div>
-</div>
-</div>
-</body>
-</html>
-"""
-
-# =====================================================
-# 女優収集
-# =====================================================
-
-actress_counter = Counter()
-
-all_items = get_items("", hits=100)
-
-for item in all_items:
-
-    actresses = item.get(
-        "iteminfo",
-        {}
-    ).get(
-        "actress",
-        []
-    )
-
-    for actress in actresses:
-
-        name = actress.get(
-            "name",
-            ""
-        )
-
-        if name:
-
-            actress_counter[name] += 1
-
-popular_actresses = [
-    name
-    for name, count
-    in actress_counter.most_common(100)
-]
-
-# =====================================================
-# 作品ページ
-# =====================================================
-
-def create_item_page(item):
-
-    title = item.get("title", "")
-
-    safe_title = safe_filename(title)
-
-    filename = f"item/{safe_title}.html"
-
-    canonical = f"{BASE_URL}/{filename}"
-
-    all_urls.append(canonical)
-
-    affiliate_url = item.get(
-        "affiliateURL",
-        "#"
-    )
-
-    image = item.get(
-        "imageURL",
-        {}
-    )
-
-    img = (
-        image.get("large")
-        or image.get("small")
-        or ""
-    )
-
-    actresses = item.get(
-        "iteminfo",
-        {}
-    ).get(
-        "actress",
-        []
-    )
-
-    actress_links = ""
-
-    for actress in actresses:
-
-        name = actress.get(
-            "name",
-            ""
-        )
-
-        actress_file = safe_filename(name)
-
-        actress_links += f"""
-<a
-href="../actress/{actress_file}.html"
-style="color:#ffcc66;margin-right:10px;">
-{name}
-</a>
-"""
-
-    comment = item.get(
-        "iteminfo",
-        {}
-    ).get(
-        "comment",
-        ""
-    )
-
-    description = make_description(comment)
-
-    html = html_start(
-        title=f"{title}｜人気AVレビュー",
-        description=description,
-        canonical=canonical,
-        image=img
-    )
-
-    html += create_sidebar()
-
-    html += f"""
-</div>
-
-<div class="main">
-
-<div class="breadcrumb">
-TOP ＞ 作品ページ ＞ {title}
-</div>
-
-<h1>{title}</h1>
-
-<div class="card">
-
-<img src="{img}" width="350">
-
-<div class="info">
-
-<p>
-{actress_links}
-</p>
-
-<p>
-{description}
-</p>
-
-<a
-class="btn"
-href="{affiliate_url}">
-▶ FANZAで見る
-</a>
-
-</div>
-
-</div>
-
-<div class="related-title">
-関連記事
-</div>
-"""
-
-    related_items = get_items(
-        "",
-        hits=6
-    )
-
-    html += """
-<div class="grid">
-"""
-
-    for rel in related_items:
-
-        rel_title = rel.get(
-            "title",
-            ""
-        )
-
-        rel_img = rel.get(
-            "imageURL",
-            {}
-        )
-
-        rel_image = (
-            rel_img.get("large")
-            or rel_img.get("small")
-            or ""
-        )
-
-        rel_page = create_item_page_simple(rel)
-
-        html += f"""
-<div class="grid-card">
-
-<img src="{rel_image}">
-
-<div class="grid-info">
-
-<p>
-{rel_title[:40]}
-</p>
-
-<a
-class="btn"
-href="../{rel_page}">
-▶ 詳細
-</a>
-
-</div>
-
-</div>
-"""
-
-    html += """
-</div>
-</div>
-"""
-
-    html += html_end()
-
-    with open(
-        filename,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        f.write(html)
-
-    return filename
-
-# =====================================================
-# 簡易作品ページ
-# =====================================================
-
-def create_item_page_simple(item):
-
-    title = item.get("title", "")
-
-    safe_title = safe_filename(title)
-
-    return f"item/{safe_title}.html"
-
-# =====================================================
-# sitemap
-# =====================================================
-
-def create_sitemap():
-
-    xml = """<?xml version="1.0" encoding="UTF-8"?>
-
-<urlset
-xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-"""
-
-    for url in all_urls:
-
-        xml += f"""
-<url>
-<loc>{url}</loc>
-</url>
-"""
-
-    xml += """
-</urlset>
-"""
-
-    with open(
-        "sitemap.xml",
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        f.write(xml)
-
-# =====================================================
-# robots.txt
-# =====================================================
-
-def create_robots():
-
-    robots = f"""
-User-agent: *
-
-Allow: /
-
-Sitemap:
-{BASE_URL}/sitemap.xml
-"""
-
-    with open(
-        "robots.txt",
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        f.write(robots)
-
-# =====================================================
-# 実行
-# =====================================================
-
-items = get_items("", hits=30)
-
-for item in items:
-
-    create_item_page(item)
-
-create_sitemap()
-
-create_robots()
-
-print("SEO強化サイト生成完了")
+def page(title, body):
+    return f'''<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title}</title><style>body{{font-family:sans-serif;max-width:1100px;margin:auto;padding:20px;background:#fafafa}} .grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}} .card{{background:#fff;padding:12px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}} img{{max-width:100%;border-radius:8px}} a{{text-decoration:none;color:#c2185b}} .header{{font-size:32px;font-weight:700;margin-bottom:16px}}</style></head><body><div class="header">{SITE_NAME}</div>{body}</body></html>'''
+
+
+def write(path, content):
+    Path(path).write_text(content, encoding="utf-8")
+
+
+def create_home(items):
+    cards = []
+    for item in items:
+        title = item.get("title", "作品")
+        url = item.get("affiliateURL") or item.get("URL") or "#"
+        image = item.get("imageURL", {}).get("large") or ""
+        cards.append(f'<div class="card"><a href="{url}" target="_blank">' + (f'<img src="{image}">' if image else '') + f'<p>{title}</p></a></div>')
+    body = f'<p><a href="/articles/index.html">記事一覧</a> | <a href="/actress/index.html">女優一覧</a> | <a href="/genre/index.html">ジャンル一覧</a></p><div class="grid">{"".join(cards)}</div>'
+    write("index.html", page(SITE_NAME, body))
+
+
+def create_list_pages():
+    actress_links = []
+    for name in ACTRESSES:
+        slug = f"actress/{name}.html"
+        write(slug, page(name, f"<h1>{name}</h1><p>代表作・人気作品紹介ページ</p><p><a href=\"/\">トップへ戻る</a></p>"))
+        actress_links.append(f'<li><a href="{name}.html">{name}</a></li>')
+    write("actress/index.html", page("女優一覧", f"<ul>{''.join(actress_links)}</ul>"))
+
+    genre_links = []
+    for name in GENRES:
+        slug = f"genre/{name}.html"
+        write(slug, page(name, f"<h1>{name}</h1><p>{name}ジャンル作品一覧</p><p><a href=\"/\">トップへ戻る</a></p>"))
+        genre_links.append(f'<li><a href="{name}.html">{name}</a></li>')
+    write("genre/index.html", page("ジャンル一覧", f"<ul>{''.join(genre_links)}</ul>"))
+
+
+def create_articles():
+    links = []
+    for slug, title, desc in ARTICLES:
+        html = page(title, f"<h1>{title}</h1><p>{desc}</p><p>更新日: {datetime.now().strftime('%Y-%m-%d')}</p><p><a href='/'>トップへ戻る</a></p>")
+        write(f"articles/{slug}.html", html)
+        links.append(f'<li><a href="{slug}.html">{title}</a></li>')
+    write("articles/index.html", page("記事一覧", f"<ul>{''.join(links)}</ul>"))
+
+
+def create_seo_files():
+    write("robots.txt", "User-agent: *\nAllow: /\nSitemap: " + SITE_URL + "/sitemap.xml")
+    urls = ["/", "/articles/index.html", "/actress/index.html", "/genre/index.html"]
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for u in urls:
+        xml.append(f"<url><loc>{SITE_URL}{u}</loc></url>")
+    xml.append("</urlset>")
+    write("sitemap.xml", "\n".join(xml))
+
+
+def main():
+    items = fetch_items()
+    create_home(items)
+    create_list_pages()
+    create_articles()
+    create_seo_files()
+    print("生成完了")
+
+if __name__ == "__main__":
+    main()
